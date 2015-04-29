@@ -3,6 +3,9 @@ package com.android.fbeyer.lootredo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 /**
@@ -30,10 +33,48 @@ public class GoalListActivity extends FragmentActivity
      */
     private boolean mTwoPane;
 
+
+    /*
+     * We need an action bar on this screen so that the plus button for a new goal can be added
+     * Only do this until we have floating button awesomeness!
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.goal_list_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /*
+     * Handle the clicking of our action menu!
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_new_goal:
+                launchCreateGoalActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void launchCreateGoalActivity() {
+        Intent detailIntent = new Intent(this, GoalDetailActivity.class);
+        detailIntent.putExtra(GoalDetailFragment.ARG_ITEM_ID, "3");
+        startActivity(detailIntent);
+    }
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goal_list);
+        //setHasOptionsMenu();
 
         if (findViewById(R.id.goal_detail_container) != null) {
             // The detail container view will be present only in the
