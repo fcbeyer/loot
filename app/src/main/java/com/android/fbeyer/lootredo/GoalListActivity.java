@@ -62,8 +62,7 @@ public class GoalListActivity extends FragmentActivity
     }
 
     private void launchCreateGoalActivity() {
-        Intent detailIntent = new Intent(this, GoalDetailActivity.class);
-        detailIntent.putExtra(GoalDetailFragment.ARG_ITEM_ID, "3");
+        Intent detailIntent = new Intent(this, CreateGoal.class);
         startActivity(detailIntent);
     }
 

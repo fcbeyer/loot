@@ -3,4 +3,7 @@
     <string name="title_goal_detail">Goal Detail</string>
     <string name="action_search">Search!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_create_goal">Add a New Goal</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
