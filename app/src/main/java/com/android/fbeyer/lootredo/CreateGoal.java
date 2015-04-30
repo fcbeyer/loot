@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 public class CreateGoal extends ActionBarActivity {
@@ -23,12 +24,12 @@ public class CreateGoal extends ActionBarActivity {
     public void saveGoalData(View view) {
         EditText goalName = (EditText) findViewById(R.id.goalName);
         EditText goalCost = (EditText) findViewById(R.id.goalCost);
-        DatePicker goalDate = (DatePicker) findViewById(R.id.goalDate);
-        int day = goalDate.getDayOfMonth();
-        int month = goalDate.getMonth();
-        int year = goalDate.getYear();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM-dd-yyyy");
-        String formatedDate = sdf.format(new Date(year, month, day));
+        DatePicker goalDatePicker = (DatePicker) findViewById(R.id.goalDate);
+        int day = goalDatePicker.getDayOfMonth();
+        int month = goalDatePicker.getMonth();
+        int year = goalDatePicker.getYear();
+        Calendar cal = new GregorianCalendar(year,month,day);
+        Date goalDate = cal.getTime();
     }
 
     @Override
