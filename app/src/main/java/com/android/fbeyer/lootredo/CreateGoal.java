@@ -1,5 +1,7 @@
 package com.android.fbeyer.lootredo;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,6 +32,27 @@ public class CreateGoal extends ActionBarActivity {
         int year = goalDatePicker.getYear();
         Calendar cal = new GregorianCalendar(year,month,day);
         Date goalDate = cal.getTime();
+        saveGoalsInDB(goalName.getText().toString(), goalCost.getText().toString(), goalDate.toString());
+    }
+
+    private void saveGoalsInDB(String name, String cost, String date) {
+        GoalContract.GoalContractDbHelper mDbHelper = new GoalContract.GoalContractDbHelper(getApplicationContext());
+        // Gets the data repository in write mode
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID, 1);
+        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME, name);
+        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_COST, cost);
+        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE, date);
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                GoalContract.GoalEntry.TABLE_NAME,
+                null,
+                values);
     }
 
     @Override

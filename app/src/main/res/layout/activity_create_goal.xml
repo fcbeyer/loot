@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:id="@+id/goalName" />
+        android:id="@+id/goalName"
+        android:hint="Name" />
 
     <EditText
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/goalCost"
-        android:text="Cost" />
+        android:hint="Cost" />
 
     <DatePicker
         android:layout_width="match_parent"

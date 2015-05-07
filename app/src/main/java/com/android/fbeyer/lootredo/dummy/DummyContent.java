@@ -26,12 +26,17 @@ public class DummyContent {
 
     static {
         // Add 3 sample items.
-        addItem(new DummyItem("1", "Prom Dress", 300.00, new Date()));
-        addItem(new DummyItem("2", "Cancun", 750.34, new Date()));
-        addItem(new DummyItem("3", "Duder", 40.13, new Date()));
+        addItem(new DummyItem("-1", "Prom Dress", 300.00, new Date()));
+        addItem(new DummyItem("-2", "Cancun", 750.34, new Date()));
+        addItem(new DummyItem("-3", "Duder", 40.13, new Date()));
     }
 
     private static void addItem(DummyItem item) {
+        ITEMS.add(item);
+        ITEM_MAP.put(item.id, item);
+    }
+
+    public static void addTest(DummyItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }

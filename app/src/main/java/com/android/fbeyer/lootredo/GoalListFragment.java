@@ -1,6 +1,8 @@
 package com.android.fbeyer.lootredo;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -9,6 +11,11 @@ import android.widget.ListView;
 
 
 import com.android.fbeyer.lootredo.dummy.DummyContent;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A list fragment representing a list of Goals. This fragment
@@ -98,7 +105,7 @@ public class GoalListFragment extends ListFragment {
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
-
+        readData();
         mCallbacks = (Callbacks) activity;
     }
 
@@ -148,5 +155,61 @@ public class GoalListFragment extends ListFragment {
         }
 
         mActivatedPosition = position;
+    }
+
+    private void readData() {
+        GoalContract.GoalContractDbHelper mDbHelper = new GoalContract.GoalContractDbHelper(getActivity().getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                GoalContract.GoalEntry._ID,
+                GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME,
+                GoalContract.GoalEntry.COLUMN_NAME_GOAL_COST,
+                GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE
+        };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                GoalContract.GoalEntry._ID + " DESC";
+
+        /*
+        Cursor cursor = db.query(
+                GoalContract.GoalEntry.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                GoalContract.GoalEntry.COLUMN_NAME_NAME + " = ?",  // The columns for the WHERE clause
+                new String[] {"cheerio"},                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+        */
+        Cursor cursor = db.rawQuery("select * from goal", null);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+        Date itemDate = new Date();
+        cursor.moveToFirst();
+        boolean moveAlong = true;
+        if(cursor.getCount() != 0) {
+
+
+            while (moveAlong) {
+                try {
+                    itemDate = new Date(String.valueOf(sdf.parse(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE)))));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                DummyContent.addTest(new DummyContent.DummyItem(
+                        cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME)),
+                        Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_COST))),
+                        itemDate
+                ));
+                moveAlong = cursor.moveToNext();
+            }
+
+
+        }
+        //goalName.setText(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME)));
     }
 }
