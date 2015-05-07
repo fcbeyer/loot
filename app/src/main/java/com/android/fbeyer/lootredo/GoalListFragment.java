@@ -84,6 +84,7 @@ public class GoalListFragment extends ListFragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 DummyContent.ITEMS));
+        readData();
     }
 
     @Override
@@ -105,7 +106,6 @@ public class GoalListFragment extends ListFragment {
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
-        readData();
         mCallbacks = (Callbacks) activity;
     }
 
@@ -186,16 +186,18 @@ public class GoalListFragment extends ListFragment {
         );
         */
         Cursor cursor = db.rawQuery("select * from goal", null);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMMM d HH:mm:ss z yyyy");
         Date itemDate = new Date();
         cursor.moveToFirst();
+        String test;
         boolean moveAlong = true;
         if(cursor.getCount() != 0) {
 
 
             while (moveAlong) {
+                test = cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE));
                 try {
-                    itemDate = new Date(String.valueOf(sdf.parse(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE)))));
+                    itemDate = sdf.parse(test);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -210,6 +212,5 @@ public class GoalListFragment extends ListFragment {
 
 
         }
-        //goalName.setText(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME)));
     }
 }

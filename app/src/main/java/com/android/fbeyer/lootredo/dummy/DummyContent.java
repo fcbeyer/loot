@@ -37,8 +37,11 @@ public class DummyContent {
     }
 
     public static void addTest(DummyItem item) {
-        ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        boolean duder = ITEMS.contains(item);
+        if(!ITEMS.contains(item)){
+            ITEMS.add(item);
+            ITEM_MAP.put(item.id, item);
+        }
     }
 
     /**
@@ -55,6 +58,18 @@ public class DummyContent {
             this.name = name;
             this.cost = cost;
             this.date = date;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+
+            if (obj == this) {
+                return true;
+            }
+
+            DummyItem other = (DummyItem) obj;
+            boolean mo = id.equals(other.id);
+            return id.equals(other.id);
         }
 
         @Override
