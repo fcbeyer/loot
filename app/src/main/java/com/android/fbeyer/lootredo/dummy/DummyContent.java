@@ -26,21 +26,21 @@ public class DummyContent {
 
     static {
         // Add 3 sample items.
-        addItem(new DummyItem("-1", "Prom Dress", 300.00, new Date()));
-        addItem(new DummyItem("-2", "Cancun", 750.34, new Date()));
-        addItem(new DummyItem("-3", "Duder", 40.13, new Date()));
+        addItem(new DummyItem(-1, "Prom Dress", 300.00, new Date()));
+        addItem(new DummyItem(-2, "Cancun", 750.34, new Date()));
+        addItem(new DummyItem(-3, "Duder", 40.13, new Date()));
     }
 
     private static void addItem(DummyItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id, item);
+        ITEM_MAP.put(String.valueOf(item.id), item);
     }
 
     public static void addTest(DummyItem item) {
         boolean duder = ITEMS.contains(item);
         if(!ITEMS.contains(item)){
             ITEMS.add(item);
-            ITEM_MAP.put(item.id, item);
+            ITEM_MAP.put(String.valueOf(item.id), item);
         }
     }
 
@@ -48,12 +48,12 @@ public class DummyContent {
      * A dummy item representing a piece of content.
      */
     public static class DummyItem {
-        public String id;
+        public int id;
         public String name;
         public Double cost;
         public Date date;
 
-        public DummyItem(String id, String name, Double cost, Date date) {
+        public DummyItem(int id, String name, Double cost, Date date) {
             this.id = id;
             this.name = name;
             this.cost = cost;
@@ -68,8 +68,7 @@ public class DummyContent {
             }
 
             DummyItem other = (DummyItem) obj;
-            boolean mo = id.equals(other.id);
-            return id.equals(other.id);
+            return id == other.id;
         }
 
         @Override

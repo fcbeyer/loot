@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.android.fbeyer.lootredo.GoalContract.GoalEntry.setCurrentId;
+
 /**
  * A list fragment representing a list of Goals. This fragment
  * also supports tablet devices by allowing list items to be given an
@@ -84,8 +86,8 @@ public class GoalListFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                alert.setTitle("Alert!!");
-                alert.setMessage("Are you sure to delete record");
+                alert.setTitle("Confirm Delete");
+                alert.setMessage("Are you sure you want to delete this record?");
                 final int deleteMe = position;
                 alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
@@ -167,7 +169,7 @@ public class GoalListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(String.valueOf(DummyContent.ITEMS.get(position).id));
     }
 
     @Override
@@ -236,7 +238,7 @@ public class GoalListFragment extends ListFragment {
         String test;
         boolean moveAlong = true;
         if(cursor.getCount() != 0) {
-
+            setCurrentId(cursor.getCount());
 
             while (moveAlong) {
                 test = cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE));
@@ -246,7 +248,7 @@ public class GoalListFragment extends ListFragment {
                     e.printStackTrace();
                 }
                 DummyContent.addTest(new DummyContent.DummyItem(
-                        cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME)),
                         Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(GoalContract.GoalEntry.COLUMN_NAME_GOAL_COST))),
                         itemDate

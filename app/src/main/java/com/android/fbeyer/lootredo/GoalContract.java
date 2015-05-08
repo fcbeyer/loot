@@ -14,6 +14,7 @@ public final class GoalContract {
     public GoalContract() {}
 
     private static final String TEXT_TYPE = " TEXT";
+    private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + GoalEntry.TABLE_NAME + " (" +
@@ -34,6 +35,16 @@ public final class GoalContract {
         public static final String COLUMN_NAME_GOAL_NAME = "name";
         public static final String COLUMN_NAME_GOAL_COST = "cost";
         public static final String COLUMN_NAME_GOAL_DATE = "date";
+        private static int current_id;
+        public static void setCurrentId(int id) {
+            current_id = id;
+        }
+        public static void increaseCurrentId() {
+            current_id++;
+        }
+        public static int getCurrentId() {
+            return current_id;
+        }
     }
 
     public static class GoalContractDbHelper extends SQLiteOpenHelper {

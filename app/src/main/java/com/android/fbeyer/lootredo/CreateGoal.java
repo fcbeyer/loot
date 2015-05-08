@@ -1,6 +1,7 @@
 package com.android.fbeyer.lootredo;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import android.widget.EditText;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static com.android.fbeyer.lootredo.GoalContract.GoalEntry.getCurrentId;
+import static com.android.fbeyer.lootredo.GoalContract.GoalEntry.increaseCurrentId;
 
 
 public class CreateGoal extends ActionBarActivity {
@@ -33,6 +37,8 @@ public class CreateGoal extends ActionBarActivity {
         Calendar cal = new GregorianCalendar(year,month,day);
         Date goalDate = cal.getTime();
         saveGoalsInDB(goalName.getText().toString(), goalCost.getText().toString(), goalDate.toString());
+        Intent detailIntent = new Intent(this, GoalListActivity.class);
+        startActivity(detailIntent);
     }
 
     private void saveGoalsInDB(String name, String cost, String date) {
@@ -42,7 +48,8 @@ public class CreateGoal extends ActionBarActivity {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID, 1);
+        int id = getCurrentId() + 1;
+        values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_ID, id);
         values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_NAME, name);
         values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_COST, cost);
         values.put(GoalContract.GoalEntry.COLUMN_NAME_GOAL_DATE, date);
@@ -53,6 +60,7 @@ public class CreateGoal extends ActionBarActivity {
                 GoalContract.GoalEntry.TABLE_NAME,
                 null,
                 values);
+        increaseCurrentId();
     }
 
     @Override
