@@ -1,11 +1,14 @@
 package com.android.fbeyer.lootredo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -72,6 +75,47 @@ public class GoalListFragment extends ListFragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public GoalListFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                alert.setTitle("Alert!!");
+                alert.setMessage("Are you sure to delete record");
+                final int deleteMe = position;
+                alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do your work here
+                        DummyContent.ITEMS.remove(deleteMe);
+                        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+                                getActivity(),
+                                android.R.layout.simple_list_item_activated_1,
+                                android.R.id.text1,
+                                DummyContent.ITEMS));
+                        dialog.dismiss();
+
+                    }
+                });
+                alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+
+                alert.show();
+                return true;
+
+            }
+        });
     }
 
     @Override
